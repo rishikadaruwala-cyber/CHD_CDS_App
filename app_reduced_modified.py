@@ -33,7 +33,7 @@ model = load_model()
 def categorize_risk(probability):
     if probability >= 0.30:
         return (
-            "Warning 'High risk' ",
+            "High risk",
             "This patient has an high estimated 10 year CHD risk. "
             "Further cardiovascular evaluation, lipid management, "
             "and lifestyle intervention is needed.")
@@ -99,7 +99,6 @@ with vitals:
 prevalentStroke = st.selectbox("History of Stroke?", ["No", "Yes"])
 prevalentStroke = 1 if prevalentStroke == "Yes" else 0
 
-
 # build dataframe
 input_df = pd.DataFrame({
     "male": [male],
@@ -135,7 +134,7 @@ if st.button("Predict 10-Year CHD Risk"):
     risk_percent = probability * 100
 
     st.subheader("Risk Estimate")
-    st.metric("10-Year CHD Probability", f"{risk_percent:.1f}%")
+    st.metric("10 Year CHD Probability", f"{risk_percent:.1f}%")
 
 
 # Risk category function to label the patient as high, moderate, or low risk, and then
@@ -144,12 +143,13 @@ if st.button("Predict 10-Year CHD Risk"):
     category, message = categorize_risk(probability)
 
     if category == "High risk":
-        st.warning(f"**{category}:** {message}")
+      st.error(f"**{category}:** {message}")
+
     elif category == "Moderate risk":
-        st.info(f"**{category}:** {message}")
+      st.warning(f"**{category}:** {message}")
+
     else:
-        st.success(f"**{category}:** {message}")
-    st.caption("Thresholds chosen based on our project’s ROC ")
+      st.success(f"**{category}:** {message}")
 
 
     # CDS tools must deliver information quickly.
